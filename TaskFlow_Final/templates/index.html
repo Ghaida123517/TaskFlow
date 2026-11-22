@@ -1,0 +1,1122 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaskFlow | Productivity Platform</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #030405;
+    --white: #f4f4f5;
+    --silver: #a0a2aa;
+    --muted: #858791;
+    --border: rgba(255,255,255,0.12);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--white);
+}
+
+/* =========================
+   DARK BACKGROUND
+========================= */
+
+.background {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            ellipse at 34% 43%,
+            rgba(32,35,42,0.15),
+            transparent 58%
+        ),
+        linear-gradient(
+            135deg,
+            #020203 0%,
+            #08090b 48%,
+            #020203 100%
+        );
+}
+
+#network {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.background::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,0.08),
+            transparent 48%,
+            rgba(0,0,0,0.24)
+        );
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+nav {
+    position: relative;
+    z-index: 5;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 32px 6.5%;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.logo-icon {
+    width: 36px;
+    height: 36px;
+
+    display: grid;
+    place-items: center;
+
+    background: linear-gradient(135deg, #ededf0, #92949c);
+    color: #08090b;
+
+    border-radius: 11px;
+    font-size: 20px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 35px;
+}
+
+.nav-links a {
+    color: #a7a8af;
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover {
+    color: #ffffff;
+}
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+
+.main {
+    max-width: 1550px;
+    min-height: calc(100vh - 110px);
+
+    margin: auto;
+    padding: 40px 6.5% 90px;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(350px, 0.7fr);
+    align-items: center;
+    gap: 55px;
+}
+
+/* =========================
+   HERO SECTION
+========================= */
+
+.hero {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 12px 19px;
+    margin-bottom: 30px;
+
+    border: 1px solid rgba(255,255,255,0.13);
+    border-radius: 50px;
+
+    background: rgba(255,255,255,0.045);
+    backdrop-filter: blur(12px);
+
+    color: #bfc0c6;
+    font-size: 12px;
+}
+
+.hero h1 {
+    font-size: clamp(43px, 4.3vw, 72px);
+    font-weight: 800;
+    letter-spacing: -3px;
+    line-height: 1.12;
+
+    margin-bottom: 27px;
+
+    text-shadow: 0 8px 35px rgba(0,0,0,0.55);
+}
+
+.hero h1 span {
+    color: #878992;
+}
+
+.hero-description {
+    max-width: 510px;
+
+    color: #a4a5ae;
+    font-size: 15px;
+    line-height: 1.9;
+}
+
+/* =========================
+   FEATURES
+========================= */
+
+.features {
+    display: flex;
+    align-items: flex-start;
+    gap: 45px;
+
+    margin-top: 43px;
+}
+
+.feature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+
+    text-align: center;
+    color: #b8b9c0;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.feature-icon {
+    width: 56px;
+    height: 56px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid rgba(255,255,255,0.17);
+    border-radius: 15px;
+
+    background: linear-gradient(
+        145deg,
+        rgba(255,255,255,0.09),
+        rgba(255,255,255,0.025)
+    );
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.09),
+        0 8px 25px rgba(0,0,0,0.4);
+
+    backdrop-filter: blur(12px);
+}
+
+.feature-icon svg {
+    width: 27px;
+    height: 27px;
+
+    stroke: #c6c8d0;
+    stroke-width: 1.8;
+    fill: none;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* =========================
+   AUTHENTICATION CARD
+========================= */
+
+.auth-card {
+    position: relative;
+    z-index: 3;
+
+    width: 100%;
+    max-width: 440px;
+    margin-left: auto;
+
+    padding: 43px;
+
+    border: 1px solid rgba(255,255,255,0.13);
+    border-radius: 25px;
+
+    background: rgba(12,13,16,0.88);
+
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+
+    box-shadow:
+        0 30px 100px rgba(0,0,0,0.7),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.auth-card h2 {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -1px;
+
+    margin-bottom: 11px;
+}
+
+.subtitle {
+    color: #92939c;
+    font-size: 13px;
+    line-height: 1.7;
+
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+
+    color: #d5d5da;
+    font-size: 12px;
+    font-weight: 500;
+
+    margin-bottom: 10px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 15px 16px;
+
+    border-radius: 11px;
+    border: 1px solid rgba(255,255,255,0.12);
+
+    outline: none;
+
+    background: rgba(255,255,255,0.035);
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 13px;
+
+    transition: 0.25s;
+}
+
+.form-group input::placeholder {
+    color: #73757e;
+}
+
+.form-group input:focus {
+    border-color: #a8a9b1;
+    background: rgba(255,255,255,0.055);
+
+    box-shadow:
+        0 0 0 3px rgba(255,255,255,0.045);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn {
+    width: 100%;
+    padding: 16px;
+
+    border-radius: 11px;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.btn-primary {
+    color: #0c0c0e;
+    border: none;
+
+    background: linear-gradient(
+        135deg,
+        #e5e5e8,
+        #a8a9b0
+    );
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 30px rgba(255,255,255,0.10);
+}
+
+.btn-secondary {
+    color: #e7e7eb;
+
+    background: rgba(255,255,255,0.025);
+
+    border: 1px solid rgba(255,255,255,0.20);
+}
+
+.btn-secondary:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    color: #74757e;
+    font-size: 12px;
+
+    margin: 24px 0;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+
+    background: rgba(255,255,255,0.11);
+}
+
+.hidden {
+    display: none;
+}
+
+.message {
+    display: none;
+
+    padding: 12px;
+    margin-bottom: 18px;
+
+    border-radius: 10px;
+
+    background: rgba(120,45,55,0.16);
+    border: 1px solid rgba(255,110,125,0.20);
+
+    color: #ffb6c0;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+footer {
+    position: relative;
+    text-align: center;
+
+    color: #696b74;
+    font-size: 11px;
+
+    padding: 25px;
+}
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+@media (max-width: 1000px) {
+    .main {
+        grid-template-columns: 1fr;
+        gap: 60px;
+    }
+
+    .hero {
+        max-width: 750px;
+    }
+
+    .auth-card {
+        margin: auto;
+    }
+
+    .hero h1 {
+        font-size: clamp(40px, 6vw, 65px);
+    }
+}
+
+@media (max-width: 600px) {
+    nav {
+        padding: 25px 6%;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .main {
+        padding: 40px 6% 70px;
+    }
+
+    .hero h1 {
+        font-size: 39px;
+        letter-spacing: -2px;
+    }
+
+    .hero-description {
+        font-size: 13px;
+    }
+
+    .features {
+        gap: 12px;
+        justify-content: space-between;
+    }
+
+    .feature {
+        font-size: 10px;
+    }
+
+    .feature-icon {
+        width: 49px;
+        height: 49px;
+    }
+
+    .auth-card {
+        padding: 29px 23px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- STATIC DARK NETWORK BACKGROUND -->
+
+<div class="background">
+    <canvas id="network"></canvas>
+</div>
+
+<!-- NAVIGATION -->
+
+<nav>
+    <div class="logo">
+        <div class="logo-icon">◆</div>
+        TaskFlow
+    </div>
+
+    <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#features">Solutions</a>
+        <a href="#about">About</a>
+    </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+
+<main class="main">
+
+    <!-- LEFT HERO -->
+
+    <section class="hero" id="about">
+
+        <div class="badge">
+            ⚡ Productivity Platform
+        </div>
+
+        <h1>
+            Organize. Collaborate.<br>
+            <span>Achieve More.</span>
+        </h1>
+
+        <p class="hero-description">
+            A modern workspace to manage your tasks,
+            projects, and team collaboration —
+            all in one place.
+        </p>
+
+        <div class="features" id="features">
+
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9"></circle>
+                        <path d="M7.5 12l3 3 6-6"></path>
+                    </svg>
+                </div>
+                <span>Task Management</span>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="9" cy="8" r="3"></circle>
+                        <path d="M3 20v-2a6 6 0 0 1 12 0v2"></path>
+                        <path d="M16 5a3 3 0 0 1 0 6"></path>
+                        <path d="M18 14a5 5 0 0 1 3 5v1"></path>
+                    </svg>
+                </div>
+                <span>Team Collaboration</span>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="3" y="13" width="4" height="8" rx="1"></rect>
+                        <rect x="10" y="8" width="4" height="13" rx="1"></rect>
+                        <rect x="17" y="3" width="4" height="18" rx="1"></rect>
+                    </svg>
+                </div>
+                <span>Progress Tracking</span>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- RIGHT AUTH CARD -->
+
+    <section class="auth-card">
+
+        <!-- LOGIN -->
+
+        <div id="login">
+
+            <h2>Welcome Back</h2>
+
+            <p class="subtitle">
+                Sign in to your TaskFlow workspace.
+            </p>
+
+            <div id="loginMessage" class="message"></div>
+
+            <form id="loginForm" autocomplete="off">
+
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Sign In →
+                </button>
+
+            </form>
+
+            <div class="divider">or</div>
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="showRegister()"
+            >
+                Create Account
+            </button>
+
+        </div>
+
+        <!-- REGISTER -->
+
+        <div id="register" class="hidden">
+
+            <h2>Create Account</h2>
+
+            <p class="subtitle">
+                Start your journey with TaskFlow.
+            </p>
+
+            <div id="registerMessage" class="message"></div>
+
+            <form id="registerForm">
+
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+
+                    <input
+                        type="text"
+                        id="fullName"
+                        placeholder="Enter your full name"
+                        autocomplete="name"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="registerEmail">Email Address</label>
+
+                    <input
+                        type="email"
+                        id="registerEmail"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+
+                    <input
+                        type="password"
+                        id="registerPassword"
+                        placeholder="Create a password"
+                        autocomplete="new-password"
+                        minlength="8"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        placeholder="Confirm your password"
+                        autocomplete="new-password"
+                        minlength="8"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Create Account →
+                </button>
+
+            </form>
+
+            <div class="divider">or</div>
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="showLogin()"
+            >
+                Back to Sign In
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+    © 2026 TaskFlow. All rights reserved.
+</footer>
+
+<script>
+
+/* =========================
+   LOGIN / REGISTER SWITCH
+========================= */
+
+function showRegister() {
+    document.getElementById("login").classList.add("hidden");
+    document.getElementById("register").classList.remove("hidden");
+}
+
+function showLogin() {
+    document.getElementById("register").classList.add("hidden");
+    document.getElementById("login").classList.remove("hidden");
+
+    document.getElementById("loginForm").reset();
+}
+
+function showMessage(id, text) {
+    const element = document.getElementById(id);
+    element.textContent = text;
+    element.style.display = "block";
+}
+/* CLEAR LOGIN FIELDS ON PAGE LOAD */
+
+window.addEventListener("pageshow", function () {
+    const loginForm = document.getElementById("loginForm");
+
+    if (loginForm) {
+        document.getElementById("loginEmail").value = "";
+        document.getElementById("loginPassword").value = "";
+    }
+});
+ /* =========================
+   REAL LOGIN
+========================= */
+
+document.getElementById("loginForm").addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        const email =
+            document.getElementById("loginEmail").value;
+
+        const password =
+            document.getElementById("loginPassword").value;
+
+        try {
+            const response = await fetch("/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                window.location.href = "/dashboard";
+            } else {
+                showMessage("loginMessage", result.message);
+            }
+
+        } catch (error) {
+            showMessage(
+                "loginMessage",
+                "Something went wrong. Please try again."
+            );
+        }
+    }
+);
+
+
+/* =========================
+   REAL REGISTRATION
+========================= */
+
+document.getElementById("registerForm").addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        const name =
+            document.getElementById("fullName").value;
+
+        const email =
+            document.getElementById("registerEmail").value;
+
+        const password =
+            document.getElementById("registerPassword").value;
+
+        const confirm_password =
+            document.getElementById("confirmPassword").value;
+
+        if (password !== confirm_password) {
+            showMessage(
+                "registerMessage",
+                "Passwords do not match."
+            );
+            return;
+        }
+
+        try {
+            const response = await fetch("/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    password: password,
+                    confirm_password: confirm_password
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+
+                alert(result.message);
+
+                document.getElementById("registerForm").reset();
+
+                showLogin();
+
+            } else {
+                showMessage(
+                    "registerMessage",
+                    result.message
+                );
+            }
+
+        } catch (error) {
+            showMessage(
+                "registerMessage",
+                "Something went wrong. Please try again."
+            );
+        }
+    }
+);
+/* =========================
+   STATIC NETWORK GLOBE
+========================= */
+
+const canvas = document.getElementById("network");
+const ctx = canvas.getContext("2d");
+
+function drawBackground() {
+
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    canvas.width = Math.round(width * pixelRatio);
+    canvas.height = Math.round(height * pixelRatio);
+
+    ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+
+    ctx.clearRect(0, 0, width, height);
+
+    /* Globe on the left */
+
+    const globeRadius =
+        Math.min(width * 0.43, height * 0.48, 420);
+
+    const centerX =
+        width > 900 ? width * 0.34 : width * 0.50;
+
+    const centerY =
+        width > 900 ? height * 0.47 : height * 0.37;
+
+    /* Soft silver glow */
+
+    const glow = ctx.createRadialGradient(
+        centerX,
+        centerY,
+        globeRadius * 0.2,
+        centerX,
+        centerY,
+        globeRadius * 1.2
+    );
+
+    glow.addColorStop(0, "rgba(50,54,64,0.025)");
+    glow.addColorStop(0.7, "rgba(75,80,92,0.045)");
+    glow.addColorStop(1, "rgba(0,0,0,0)");
+
+    ctx.fillStyle = glow;
+
+    ctx.beginPath();
+    ctx.arc(
+        centerX,
+        centerY,
+        globeRadius * 1.2,
+        0,
+        Math.PI * 2
+    );
+    ctx.fill();
+
+    /* Generate sphere points */
+
+    const points = [];
+    const total = 190;
+    const rotation = 0.35;
+
+    for (let i = 0; i < total; i++) {
+
+        const y = 1 - (i / (total - 1)) * 2;
+        const ringRadius = Math.sqrt(1 - y * y);
+
+        const theta =
+            Math.PI * (3 - Math.sqrt(5)) * i;
+
+        const originalX =
+            Math.cos(theta) * ringRadius;
+
+        const originalZ =
+            Math.sin(theta) * ringRadius;
+
+        const x =
+            originalX * Math.cos(rotation) -
+            originalZ * Math.sin(rotation);
+
+        const z =
+            originalX * Math.sin(rotation) +
+            originalZ * Math.cos(rotation);
+
+        const perspective =
+            2.8 / (2.8 - z * 0.35);
+
+        points.push({
+            x: centerX + x * globeRadius * perspective,
+            y: centerY + y * globeRadius * perspective,
+            z: z,
+            brightness: (z + 1) / 2
+        });
+    }
+
+    /* Draw network lines */
+
+    for (let i = 0; i < points.length; i++) {
+
+        for (let j = i + 1; j < points.length; j++) {
+
+            const a = points[i];
+            const b = points[j];
+
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+
+            const distance =
+                Math.sqrt(dx * dx + dy * dy);
+
+            const maxDistance =
+                globeRadius * 0.30;
+
+            if (distance < maxDistance) {
+
+                const visibility =
+                    (a.brightness + b.brightness) / 2;
+
+                const alpha =
+                    (1 - distance / maxDistance) *
+                    (0.04 + visibility * 0.18);
+
+                ctx.beginPath();
+
+                ctx.strokeStyle =
+                    `rgba(190,195,205,${alpha})`;
+
+                ctx.lineWidth = 0.7;
+
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(b.x, b.y);
+
+                ctx.stroke();
+            }
+        }
+    }
+
+    /* Draw silver points */
+
+    for (const point of points) {
+
+        const radius =
+            point.brightness > 0.7 ? 1.8 : 1.1;
+
+        if (point.brightness > 0.8) {
+
+            ctx.beginPath();
+
+            ctx.arc(
+                point.x,
+                point.y,
+                radius * 3.5,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fillStyle =
+                "rgba(190,195,210,0.035)";
+
+            ctx.fill();
+        }
+
+        ctx.beginPath();
+
+        ctx.arc(
+            point.x,
+            point.y,
+            radius,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fillStyle =
+            `rgba(205,210,220,${0.18 + point.brightness * 0.48})`;
+
+        ctx.fill();
+    }
+
+    /* Static silver waves */
+
+    const startY = height * 0.88;
+
+    for (let line = 0; line < 20; line++) {
+
+        ctx.beginPath();
+
+        for (let x = 0; x <= width; x += 12) {
+
+            const wave =
+                Math.sin(x * 0.007 + line * 0.23) *
+                (15 + line * 1.3);
+
+            const y =
+                startY + line * 5 + wave;
+
+            if (x === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+        }
+
+        ctx.strokeStyle =
+            `rgba(130,135,150,${0.04 - line * 0.001})`;
+
+        ctx.lineWidth = 0.6;
+        ctx.stroke();
+    }
+}
+
+/* Draw only on page load and resize.
+   No animation or rotation. */
+
+window.addEventListener("resize", drawBackground);
+
+drawBackground();
+
+</script>
+
+</body>
+</html>

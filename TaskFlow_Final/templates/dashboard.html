@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TaskFlow | Dashboard</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: #050506;
+    color: #f4f4f5;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* HEADER */
+
+header {
+    height: 85px;
+    padding: 0 6%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: #0b0c0f;
+    border-bottom: 1px solid #24252b;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.user-name {
+    color: #b9bac1;
+    font-size: 14px;
+}
+
+.logout-btn {
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: 1px solid #41424a;
+    background: #1b1c21;
+    color: #f4f4f5;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.logout-btn:hover {
+    background: #303139;
+}
+
+/* MAIN */
+
+main {
+    max-width: 1250px;
+    margin: auto;
+    padding: 75px 35px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 11px 18px;
+    border: 1px solid #383940;
+    border-radius: 30px;
+    background: #141519;
+    color: #bfc0c7;
+    font-size: 12px;
+    margin-bottom: 25px;
+}
+
+h1 {
+    font-size: clamp(32px, 4vw, 52px);
+    letter-spacing: -2px;
+    margin-bottom: 18px;
+}
+
+.description {
+    color: #9fa0a9;
+    font-size: 15px;
+    line-height: 1.8;
+    max-width: 650px;
+}
+
+/* DASHBOARD CARDS */
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 55px;
+}
+
+.card {
+    min-height: 210px;
+    padding: 32px;
+    border-radius: 20px;
+    border: 1px solid #2d2e35;
+
+    background: linear-gradient(
+        145deg,
+        #17181d,
+        #0c0d10
+    );
+
+    transition: 0.25s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: #62636c;
+}
+
+.card-icon {
+    width: 48px;
+    height: 48px;
+
+    display: grid;
+    place-items: center;
+
+    background: #24252c;
+    border: 1px solid #41424b;
+    border-radius: 13px;
+
+    font-size: 23px;
+    margin-bottom: 25px;
+}
+
+.card h2 {
+    font-size: 19px;
+    margin-bottom: 12px;
+}
+
+.card p {
+    color: #999aa4;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+/* INFO SECTION */
+
+.info-box {
+    margin-top: 40px;
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid #2d2e35;
+    background: #101115;
+}
+
+.info-box h2 {
+    font-size: 19px;
+    margin-bottom: 12px;
+}
+
+.info-box p {
+    color: #999aa4;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* MOBILE */
+
+@media (max-width: 850px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    main {
+        padding: 50px 22px;
+    }
+
+    header {
+        padding: 0 20px;
+    }
+
+    .user-name {
+        display: none;
+    }
+}
+
+/* ===== SPRINT 2 STYLES ===== */
+.tf-section {
+    display: none;
+    margin-top: 30px;
+    padding: 30px;
+    background: #17191f;
+    border: 1px solid #444851;
+    border-radius: 18px;
+    color: #E5E7EB;
+}
+.tf-section h2 {
+    font-size: 19px;
+    margin-bottom: 8px;
+}
+.tf-subtitle {
+    color: #999aa4;
+    font-size: 14px;
+    margin-bottom: 18px;
+}
+.tf-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.tf-input {
+    padding: 11px 12px;
+    background: #24262d;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 8px;
+    font-size: 14px;
+    color-scheme: dark;
+}
+.tf-btn {
+    padding: 11px 18px;
+    background: #252830;
+    color: white;
+    border: 1px solid #AEB4BE;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.tf-btn:hover {
+    background: #303139;
+}
+.tf-btn-primary {
+    background: #E5E7EB;
+    color: #17191f;
+    border: none;
+    font-weight: bold;
+}
+.tf-btn-primary:hover {
+    background: #ffffff;
+}
+.tf-btn-danger {
+    border-color: #EF4444;
+    color: #FCA5A5;
+}
+.tf-task {
+    background: #252830;
+    border: 1px solid #555963;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 15px;
+}
+.tf-task h3 {
+    font-size: 17px;
+    margin-bottom: 6px;
+}
+.tf-task p {
+    color: #C9CDD4;
+    font-size: 14px;
+    line-height: 1.6;
+}
+.tf-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+.tf-badge {
+    display: inline-block;
+    padding: 4px 11px;
+    border: 1px solid #555963;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #D1D5DB;
+    background: #1b1d23;
+}
+.tf-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+}
+.tf-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+}
+.tf-form-grid .full {
+    grid-column: 1 / -1;
+}
+.tf-form-grid label {
+    display: block;
+    font-size: 13px;
+    color: #AEB4BE;
+    margin-bottom: 6px;
+}
+.tf-form-grid .tf-input {
+    width: 100%;
+}
+.tf-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 14px;
+}
+.tf-stat {
+    background: #1b1d23;
+    border: 1px solid #41424b;
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+}
+.tf-stat .num {
+    font-size: 28px;
+    font-weight: 800;
+}
+.tf-stat .lbl {
+    font-size: 12px;
+    color: #AEB4BE;
+    margin-top: 4px;
+}
+.tf-progress {
+    height: 10px;
+    background: #1b1d23;
+    border: 1px solid #41424b;
+    border-radius: 10px;
+    margin-top: 14px;
+    overflow: hidden;
+}
+.tf-progress-fill {
+    height: 100%;
+    background: #22C55E;
+}
+.tf-empty {
+    color: #AEB4BE;
+    margin-top: 15px;
+}
+@media (max-width: 850px) {
+    .tf-stats, .tf-form-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">◆ TaskFlow</div>
+
+    <div class="header-right">
+        <span class="user-name">{{ name }}</span>
+        <button class="logout-btn" onclick="logout()">
+            Log Out
+        </button>
+    </div>
+
+</header>
+
+<main>
+
+    <div class="badge">
+        ✦ YOUR WORKSPACE
+    </div>
+
+    <h1>Welcome back, {{ name }}!</h1>
+
+    <p class="description">
+        Your workspace is ready.
+        Organize your tasks, collaborate with your team,
+        and stay focused on what matters most.
+    </p>
+
+    <div class="cards">
+
+    <!-- CREATE TEAM -->
+    <div class="card" onclick="createTeam()" style="cursor: pointer;">
+       <div class="card-icon">
+    <svg width="28" height="28" viewBox="0 0 24 24"
+         fill="none" stroke="#E5E7EB"
+         stroke-width="1.8"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M19 8v6"/>
+        <path d="M16 11h6"/>
+    </svg>
+</div>
+        <h2>Create Team</h2>
+        <p>
+            Create a new team and start collaborating
+            with your members.
+        </p>
+    </div>
+<!-- JOIN TEAM -->
+<div class="card" onclick="joinTeam()" style="cursor: pointer;">
+    <div class="card-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24"
+             fill="none" stroke="#E5E7EB"
+             stroke-width="1.8"
+             stroke-linecap="round"
+             stroke-linejoin="round">
+            <circle cx="9" cy="8" r="4"/>
+            <path d="M3 21v-2a6 6 0 0 1 12 0v2"/>
+            <path d="M19 8v8"/>
+            <path d="M15 12h8"/>
+        </svg>
+    </div>
+
+    <h2>Join Team</h2>
+    <p>Join an existing team using an invitation code.</p>
+</div>
+    <!-- MY TEAMS -->
+    <div class="card" onclick="toggleMyTeams()" style="cursor: pointer;">
+       <div class="card-icon">
+    <svg width="28" height="28" viewBox="0 0 24 24"
+         fill="none" stroke="#E5E7EB"
+         stroke-width="1.8"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>
+</div>
+        <h2>My Teams</h2>
+        <p>
+            View and manage the teams you belong to.
+        </p>
+    </div>
+<!-- CREATE TASK CARD -->
+<div class="card" onclick="showCreateTask()" style="cursor: pointer;">
+    <div class="card-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24"
+             fill="none" stroke="#E5E7EB"
+             stroke-width="1.8"
+             stroke-linecap="round"
+             stroke-linejoin="round">
+            <rect x="4" y="4" width="16" height="16" rx="2"/>
+            <path d="M12 8v8M8 12h8"/>
+        </svg>
+    </div>
+
+    <h2>Create Task</h2>
+    <p>Create a new task and organize your team's work.</p>
+</div>
+    <!-- MY TASKS -->
+    <div class="card" onclick="showMyTasks()" style="cursor: pointer;">
+        <div class="card-icon">
+    <svg width="28" height="28" viewBox="0 0 24 24"
+         fill="none" stroke="#E5E7EB"
+         stroke-width="1.8"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+        <rect x="4" y="3" width="16" height="18" rx="2"/>
+        <path d="M8 8l1.5 1.5L12 7"/>
+        <path d="M14 9h3"/>
+        <path d="M8 15l1.5 1.5L12 14"/>
+        <path d="M14 16h3"/>
+    </svg>
+</div>
+        <h2>My Tasks</h2>
+        <p>
+            View your assigned tasks and track progress.
+        </p>
+    </div>
+    <!-- MANAGE TASKS (SPRINT 2) -->
+    <div class="card" onclick="showManageTasks()" style="cursor: pointer;">
+        <div class="card-icon">
+    <svg width="28" height="28" viewBox="0 0 24 24"
+         fill="none" stroke="#E5E7EB"
+         stroke-width="1.8"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+        <path d="M12 20h9"/>
+        <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+    </svg>
+</div>
+        <h2>Manage Tasks</h2>
+        <p>
+            Edit, delete, prioritize and set deadlines for your team's tasks.
+        </p>
+    </div>
+    <!-- TEAM PROGRESS (SPRINT 2) -->
+    <div class="card" onclick="showTeamProgress()" style="cursor: pointer;">
+        <div class="card-icon">
+    <svg width="28" height="28" viewBox="0 0 24 24"
+         fill="none" stroke="#E5E7EB"
+         stroke-width="1.8"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+        <path d="M4 20V10"/>
+        <path d="M10 20V4"/>
+        <path d="M16 20v-7"/>
+        <path d="M22 20H2"/>
+    </svg>
+</div>
+        <h2>Team Progress</h2>
+        <p>
+            Monitor completed and pending tasks across your team.
+        </p>
+    </div>
+    <!-- TASK HISTORY (SPRINT 2) -->
+    <div class="card" onclick="showTaskHistory()" style="cursor: pointer;">
+        <div class="card-icon">
+    <svg width="28" height="28" viewBox="0 0 24 24"
+         fill="none" stroke="#E5E7EB"
+         stroke-width="1.8"
+         stroke-linecap="round"
+         stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 7v5l3 2"/>
+    </svg>
+</div>
+        <h2>Task History</h2>
+        <p>
+            Review your team's completed tasks and achievements.
+        </p>
+    </div>
+
+</div>
+<!-- CREATE TASK SECTION -->
+<div id="createTaskSection" style="
+    display: none;
+    margin-top: 30px;
+    padding: 30px;
+    background: #17191f;
+    border: 1px solid #444851;
+    border-radius: 15px;
+    color: #E5E7EB;
+">
+
+    <h2 style="margin-bottom: 20px;">Create Task</h2>
+
+    <label for="taskTeam">Select Team</label>
+    <select id="taskTeam" style="
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0 20px;
+        background: #24262d;
+        color: white;
+        border: 1px solid #555;
+        border-radius: 8px;
+    ">
+        <option value="">Select a team</option>
+        {% for team in teams %}
+            {% if team["owner_id"] == session["user_id"] %}
+                <option value="{{ team['id'] }}">{{ team["name"] }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+
+   <label for="taskMember">Assign To</label>
+
+<select id="taskMember" style="
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0 20px;
+    background: #24262d;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 8px;
+">
+    <option value="">Select a member</option>
+
+    {% for member in members %}
+    <option value="{{ member['id'] }}"
+            data-team="{{ member['team_id'] }}">
+        {{ member['name'] }}
+    </option>
+    {% endfor %}
+</select> 
+    <label for="taskTitle">Task Title</label>
+    <input type="text" id="taskTitle"
+        placeholder="Enter task title"
+        style="
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 20px;
+            background: #24262d;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 8px;
+            box-sizing: border-box;
+        ">
+
+    <label for="taskDescription">Description</label>
+    <textarea id="taskDescription"
+        placeholder="Enter task description"
+        rows="4"
+        style="
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 20px;
+            background: #24262d;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 8px;
+            box-sizing: border-box;
+        "></textarea>
+
+    <!-- PB-12 / PB-13: deadline and priority -->
+    <div class="tf-form-grid" style="margin: 0 0 20px;">
+        <div>
+            <label for="taskDeadline">Deadline</label>
+            <input type="date" id="taskDeadline" class="tf-input">
+        </div>
+        <div>
+            <label for="taskPriority">Priority</label>
+            <select id="taskPriority" class="tf-input">
+                <option value="High">High</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="Low">Low</option>
+            </select>
+        </div>
+    </div>
+
+    <button type="button" onclick="submitTask()" style="
+        padding: 12px 25px;
+        background: #E5E7EB;
+        color: #17191f;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+    ">
+        Create Task
+    </button>
+
+</div>
+<!-- MY TEAMS SECTION -->
+<div id="myTeamsSection" style="
+    display: none;
+    margin-top: 30px;
+    padding: 30px;
+    background: #17191f;
+    border: 1px solid #444851;
+    border-radius: 18px;
+    color: #E5E7EB;
+">
+    <h2 style="margin-bottom: 20px;">My Teams</h2>
+
+    {% if teams %}
+        {% for team in teams %}
+        <div style="
+            background: #252830;
+            border: 1px solid #555963;
+            padding: 20px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+        ">
+            <h3>{{ team["name"] }}</h3>
+            <p style="color: #D1D5DB; margin-top: 8px;">
+    <span style="color: #AEB4BE;">◆</span>
+Your Role:
+{% if team["owner_id"] == session["user_id"] %}
+    Leader
+{% else %}
+    Member
+{% endif %}
+</p>
+{% if team["owner_id"] == session["user_id"] %}
+            <p style="color: #AEB4BE; margin-top: 8px;">
+               Invitation Code: {{ team["invite_code"] }}
+
+            </p>
+            <button type="button"
+        data-code="{{ team['invite_code'] }}"
+        onclick="navigator.clipboard.writeText(this.dataset.code).then(() => alert('Invitation code copied!'))"
+        style="background: #252830; color: white; border: 1px solid #AEB4BE; padding: 10px 18px; border-radius: 8px; cursor: pointer; margin-top: 10px;">
+    Copy Code
+</button>
+{% endif %}
+        </div>
+        {% endfor %}
+    {% else %}
+        <p style="color: #AEB4BE;">
+            You haven't created any teams yet.
+        </p>
+    {% endif %}
+</div>
+<!-- MY TASKS SECTION -->
+<div id="myTasksSection" class="info-box" style="display: none;">
+
+    <h2>My Tasks</h2>
+
+    <p>View your assigned tasks and track your progress.</p>
+
+    <!-- PB-17 search and PB-14 filters -->
+    <div class="tf-toolbar" style="margin-top: 18px;">
+        <input type="text" id="taskSearch" class="tf-input"
+               placeholder="Search by task title..." style="flex: 1; min-width: 200px;"
+               onkeydown="if (event.key === 'Enter') loadMyTasks()">
+        <button type="button" class="tf-btn" onclick="loadMyTasks()">Search</button>
+    </div>
+    <div class="tf-toolbar">
+        <select id="filterStatus" class="tf-input" onchange="loadMyTasks()">
+            <option value="">All statuses</option>
+            <option value="To Do">To Do</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+        </select>
+        <select id="filterPriority" class="tf-input" onchange="loadMyTasks()">
+            <option value="">All priorities</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+        </select>
+        <button type="button" class="tf-btn" onclick="clearTaskFilters()">Clear Filters</button>
+    </div>
+
+    <div id="myTasksList"></div>
+
+</div>
+
+<!-- MANAGE TASKS SECTION (PB-10, PB-11, PB-12, PB-13) -->
+<div id="manageTasksSection" class="tf-section">
+    <h2>Manage Tasks</h2>
+    <p class="tf-subtitle">Edit or delete the tasks of the teams you lead.</p>
+    <div id="manageTasksList"></div>
+</div>
+
+<!-- TEAM PROGRESS SECTION (PB-15) -->
+<div id="teamProgressSection" class="tf-section">
+    <h2>Team Progress</h2>
+    <p class="tf-subtitle">Task counts by status for the teams you lead.</p>
+    <button type="button" class="tf-btn" onclick="loadTeamProgress()">Refresh</button>
+    <div id="teamProgressList"></div>
+</div>
+
+<!-- TASK HISTORY SECTION (PB-18) -->
+<div id="taskHistorySection" class="tf-section">
+    <h2>Completed Tasks History</h2>
+    <p class="tf-subtitle">Completed tasks of the teams you lead.</p>
+    <div id="taskHistoryList"></div>
+</div>
+    <div class="info-box">
+        <h2>✦ Your Productivity Starts Here</h2>
+
+        <p>
+            Welcome to TaskFlow — your modern workspace
+            for managing projects and achieving more.
+        </p>
+    </div>
+
+</main>
+
+<script>
+// PB-7: show only the members of the selected team in "Assign To"
+function filterMembersByTeam() {
+    const teamId = document.getElementById("taskTeam").value;
+    const memberSelect = document.getElementById("taskMember");
+
+    memberSelect.value = "";
+
+    Array.from(memberSelect.options).forEach(option => {
+        if (!option.value) {
+            return;
+        }
+
+        const belongsToTeam = teamId !== "" && option.dataset.team === teamId;
+        option.hidden = !belongsToTeam;
+        option.disabled = !belongsToTeam;
+    });
+}
+
+document.getElementById("taskTeam").addEventListener("change", filterMembersByTeam);
+filterMembersByTeam();
+
+function showCreateTask() {
+    const section = document.getElementById("createTaskSection");
+
+    if (section) {
+        section.style.display = "block";
+        section.scrollIntoView({ behavior: "smooth" });
+    }
+}
+async function showMyTasks() {
+    const section = document.getElementById("myTasksSection");
+
+    section.style.display = "block";
+    section.scrollIntoView({ behavior: "smooth" });
+
+    await loadMyTasks();
+}
+
+/* =========================
+   SPRINT 2 HELPERS
+========================= */
+const STATUS_COLORS = {
+    "To Do": "#9CA3AF",
+    "In Progress": "#F59E0B",
+    "Completed": "#22C55E"
+};
+
+const PRIORITY_COLORS = {
+    "High": "#EF4444",
+    "Medium": "#F59E0B",
+    "Low": "#60A5FA"
+};
+
+function makeElement(tag, text, className) {
+    const element = document.createElement(tag);
+
+    if (text !== undefined && text !== null) {
+        element.textContent = text;
+    }
+
+    if (className) {
+        element.className = className;
+    }
+
+    return element;
+}
+
+function makeBadge(text, color) {
+    const badge = makeElement("span", text, "tf-badge");
+
+    if (color) {
+        badge.style.borderColor = color;
+        badge.style.color = color;
+    }
+
+    return badge;
+}
+
+async function postJSON(url, body) {
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    });
+
+    return response.json();
+}
+
+function openSection(id) {
+    const section = document.getElementById(id);
+
+    section.style.display = "block";
+    section.scrollIntoView({ behavior: "smooth" });
+}
+
+function taskMetaRow(task) {
+    const meta = makeElement("div", null, "tf-meta");
+
+    meta.appendChild(makeBadge("Status: " + task.status, STATUS_COLORS[task.status]));
+    meta.appendChild(makeBadge("Priority: " + task.priority, PRIORITY_COLORS[task.priority]));
+    meta.appendChild(makeBadge("Deadline: " + (task.deadline || "No deadline")));
+
+    if (task.team_name) {
+        meta.appendChild(makeBadge("Team: " + task.team_name));
+    }
+
+    return meta;
+}
+
+/* =========================
+   PB-8, PB-9, PB-14, PB-17: MY TASKS
+========================= */
+async function loadMyTasks() {
+    const taskList = document.getElementById("myTasksList");
+
+    const keyword = document.getElementById("taskSearch").value.trim();
+    const status = document.getElementById("filterStatus").value;
+    const priority = document.getElementById("filterPriority").value;
+
+    const params = new URLSearchParams();
+
+    if (keyword) params.append("q", keyword);
+    if (status) params.append("status", status);
+    if (priority) params.append("priority", priority);
+
+    try {
+        const response = await fetch("/my-tasks?" + params.toString());
+        const result = await response.json();
+
+        if (!result.success) {
+            alert(result.message);
+            return;
+        }
+
+        taskList.innerHTML = "";
+
+        if (result.tasks.length === 0) {
+            let message = "No tasks assigned to you yet.";
+
+            if (keyword) {
+                message = "No tasks match \"" + keyword + "\".";
+            } else if (status || priority) {
+                message = "No tasks match the selected filters.";
+            }
+
+            taskList.appendChild(makeElement("p", message, "tf-empty"));
+            return;
+        }
+
+        result.tasks.forEach(task => {
+            const card = makeElement("div", null, "tf-task");
+
+            card.appendChild(makeElement("h3", task.title));
+            card.appendChild(makeElement("p", task.description || "No description"));
+            card.appendChild(taskMetaRow(task));
+
+            // PB-9: status control for the assigned member
+            const actions = makeElement("div", null, "tf-actions");
+            actions.appendChild(makeElement("label", "Update status:"));
+
+            const statusSelect = makeElement("select", null, "tf-input");
+            ["To Do", "In Progress", "Completed"].forEach(value => {
+                const option = makeElement("option", value);
+                option.value = value;
+                option.selected = value === task.status;
+                statusSelect.appendChild(option);
+            });
+
+            statusSelect.addEventListener("change", () => updateTaskStatus(task.id, statusSelect.value));
+            actions.appendChild(statusSelect);
+            card.appendChild(actions);
+
+            taskList.appendChild(card);
+        });
+
+    } catch (error) {
+        alert("Unable to load tasks.");
+    }
+}
+
+function clearTaskFilters() {
+    document.getElementById("taskSearch").value = "";
+    document.getElementById("filterStatus").value = "";
+    document.getElementById("filterPriority").value = "";
+    loadMyTasks();
+}
+
+async function updateTaskStatus(taskId, status) {
+    try {
+        const result = await postJSON("/update-task-status", {
+            task_id: taskId,
+            status: status
+        });
+
+        alert(result.message);
+        loadMyTasks();
+
+    } catch (error) {
+        alert("Unable to update the task status.");
+    }
+}
+
+/* =========================
+   PB-10, PB-11, PB-12, PB-13: MANAGE TASKS (LEADER)
+========================= */
+function showManageTasks() {
+    openSection("manageTasksSection");
+    loadTeamTasks();
+}
+
+async function loadTeamTasks() {
+    const list = document.getElementById("manageTasksList");
+
+    try {
+        const response = await fetch("/team-tasks");
+        const result = await response.json();
+
+        if (!result.success) {
+            alert(result.message);
+            return;
+        }
+
+        list.innerHTML = "";
+
+        if (result.tasks.length === 0) {
+            list.appendChild(makeElement("p", "There are no tasks in the teams you lead yet.", "tf-empty"));
+            return;
+        }
+
+        result.tasks.forEach(task => list.appendChild(buildManageCard(task)));
+
+    } catch (error) {
+        alert("Unable to load team tasks.");
+    }
+}
+
+function buildManageCard(task) {
+    const card = makeElement("div", null, "tf-task");
+
+    card.appendChild(makeElement("h3", task.title));
+    card.appendChild(makeElement("p", task.description || "No description"));
+    card.appendChild(makeElement("p", "Assigned to: " + (task.assignee || "Unassigned")));
+    card.appendChild(taskMetaRow(task));
+
+    const actions = makeElement("div", null, "tf-actions");
+
+    const editButton = makeElement("button", "Edit", "tf-btn");
+    editButton.type = "button";
+    editButton.addEventListener("click", () => showEditForm(card, task));
+
+    const deleteButton = makeElement("button", "Delete", "tf-btn tf-btn-danger");
+    deleteButton.type = "button";
+    deleteButton.addEventListener("click", () => deleteTask(task));
+
+    actions.appendChild(editButton);
+    actions.appendChild(deleteButton);
+    card.appendChild(actions);
+
+    return card;
+}
+
+function showEditForm(card, task) {
+    card.innerHTML = "";
+    card.appendChild(makeElement("h3", "Edit Task"));
+
+    const grid = makeElement("div", null, "tf-form-grid");
+
+    function field(labelText, input, full) {
+        const wrapper = makeElement("div", null, full ? "full" : "");
+        wrapper.appendChild(makeElement("label", labelText));
+        wrapper.appendChild(input);
+        grid.appendChild(wrapper);
+    }
+
+    const titleInput = makeElement("input", null, "tf-input");
+    titleInput.type = "text";
+    titleInput.value = task.title;
+
+    const descriptionInput = makeElement("textarea", null, "tf-input");
+    descriptionInput.rows = 3;
+    descriptionInput.value = task.description || "";
+
+    const deadlineInput = makeElement("input", null, "tf-input");
+    deadlineInput.type = "date";
+    deadlineInput.value = task.deadline || "";
+
+    const prioritySelect = makeElement("select", null, "tf-input");
+    ["High", "Medium", "Low"].forEach(value => {
+        const option = makeElement("option", value);
+        option.value = value;
+        option.selected = value === task.priority;
+        prioritySelect.appendChild(option);
+    });
+
+    field("Task Title", titleInput, true);
+    field("Description", descriptionInput, true);
+    field("Deadline", deadlineInput, false);
+    field("Priority", prioritySelect, false);
+    card.appendChild(grid);
+
+    const actions = makeElement("div", null, "tf-actions");
+
+    const saveButton = makeElement("button", "Save Changes", "tf-btn tf-btn-primary");
+    saveButton.type = "button";
+    saveButton.addEventListener("click", async () => {
+        if (deadlineInput.validity.badInput) {
+            alert("Please enter a valid deadline date.");
+            return;
+        }
+
+        try {
+            const result = await postJSON("/edit-task", {
+                task_id: task.id,
+                title: titleInput.value.trim(),
+                description: descriptionInput.value.trim(),
+                deadline: deadlineInput.value,
+                priority: prioritySelect.value
+            });
+
+            alert(result.message);
+
+            if (result.success) {
+                loadTeamTasks();
+            }
+
+        } catch (error) {
+            alert("Unable to update the task.");
+        }
+    });
+
+    const cancelButton = makeElement("button", "Cancel", "tf-btn");
+    cancelButton.type = "button";
+    cancelButton.addEventListener("click", loadTeamTasks);
+
+    actions.appendChild(saveButton);
+    actions.appendChild(cancelButton);
+    card.appendChild(actions);
+}
+
+async function deleteTask(task) {
+    if (!confirm("Are you sure you want to delete the task \"" + task.title + "\"?")) {
+        return;
+    }
+
+    try {
+        const result = await postJSON("/delete-task", { task_id: task.id });
+
+        alert(result.message);
+        loadTeamTasks();
+
+    } catch (error) {
+        alert("Unable to delete the task.");
+    }
+}
+
+/* =========================
+   PB-15: TEAM PROGRESS DASHBOARD
+========================= */
+function showTeamProgress() {
+    openSection("teamProgressSection");
+    loadTeamProgress();
+}
+
+async function loadTeamProgress() {
+    const list = document.getElementById("teamProgressList");
+
+    try {
+        const response = await fetch("/team-progress");
+        const result = await response.json();
+
+        if (!result.success) {
+            alert(result.message);
+            return;
+        }
+
+        list.innerHTML = "";
+
+        if (result.teams.length === 0) {
+            list.appendChild(makeElement("p", "You are not leading any team yet.", "tf-empty"));
+            return;
+        }
+
+        result.teams.forEach(team => {
+            const card = makeElement("div", null, "tf-task");
+            card.appendChild(makeElement("h3", team.name));
+
+            const stats = makeElement("div", null, "tf-stats");
+            [
+                ["To Do", team.todo, STATUS_COLORS["To Do"]],
+                ["In Progress", team.in_progress, STATUS_COLORS["In Progress"]],
+                ["Completed", team.completed, STATUS_COLORS["Completed"]],
+                ["Total Tasks", team.total, "#E5E7EB"]
+            ].forEach(([label, value, color]) => {
+                const box = makeElement("div", null, "tf-stat");
+                const number = makeElement("div", String(value || 0), "num");
+                number.style.color = color;
+                box.appendChild(number);
+                box.appendChild(makeElement("div", label, "lbl"));
+                stats.appendChild(box);
+            });
+            card.appendChild(stats);
+
+            const percent = team.total ? Math.round((team.completed / team.total) * 100) : 0;
+            const bar = makeElement("div", null, "tf-progress");
+            const fill = makeElement("div", null, "tf-progress-fill");
+            fill.style.width = percent + "%";
+            bar.appendChild(fill);
+            card.appendChild(bar);
+            card.appendChild(makeElement("p", percent + "% of tasks completed"));
+
+            list.appendChild(card);
+        });
+
+    } catch (error) {
+        alert("Unable to load team progress.");
+    }
+}
+
+/* =========================
+   PB-18: COMPLETED TASKS HISTORY
+========================= */
+function showTaskHistory() {
+    openSection("taskHistorySection");
+    loadTaskHistory();
+}
+
+async function loadTaskHistory() {
+    const list = document.getElementById("taskHistoryList");
+
+    try {
+        const response = await fetch("/completed-history");
+        const result = await response.json();
+
+        if (!result.success) {
+            alert(result.message);
+            return;
+        }
+
+        list.innerHTML = "";
+
+        if (result.tasks.length === 0) {
+            list.appendChild(makeElement("p", "No completed tasks yet.", "tf-empty"));
+            return;
+        }
+
+        result.tasks.forEach(task => {
+            const card = makeElement("div", null, "tf-task");
+            card.appendChild(makeElement("h3", task.title));
+
+            const meta = makeElement("div", null, "tf-meta");
+            meta.appendChild(makeBadge("✓ " + task.status, STATUS_COLORS["Completed"]));
+            meta.appendChild(makeBadge("Team: " + task.team_name));
+            meta.appendChild(makeBadge("Completed by: " + (task.assignee || "Unassigned")));
+
+            if (task.completed_at) {
+                meta.appendChild(makeBadge("Completed on: " + task.completed_at));
+            }
+
+            card.appendChild(meta);
+            list.appendChild(card);
+        });
+
+    } catch (error) {
+        alert("Unable to load completed tasks.");
+    }
+}
+
+async function submitTask() {
+    const teamId = document.getElementById("taskTeam").value;
+    const memberId = document.getElementById("taskMember").value;
+    const title = document.getElementById("taskTitle").value.trim();
+    const description = document.getElementById("taskDescription").value.trim();
+    const deadlineInput = document.getElementById("taskDeadline");
+    const priority = document.getElementById("taskPriority").value;
+
+    if (!teamId) {
+        alert("Please select a team.");
+        return;
+    }
+
+    if (!title) {
+        alert("Task title is required.");
+        return;
+    }
+
+    if (deadlineInput.validity.badInput) {
+        alert("Please enter a valid deadline date.");
+        return;
+    }
+
+    try {
+        const response = await fetch("/create-task", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                team_id: teamId,
+                member_id: memberId,
+                title: title,
+                description: description,
+                deadline: deadlineInput.value,
+                priority: priority
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            alert("Task created successfully!");
+
+            document.getElementById("taskTitle").value = "";
+            document.getElementById("taskDescription").value = "";
+            deadlineInput.value = "";
+            document.getElementById("taskPriority").value = "Medium";
+        } else {
+            alert(result.message);
+        }
+
+    } catch (error) {
+        alert("An error occurred while creating the task.");
+    }
+}
+
+
+async function logout() {
+    try {
+        const response = await fetch("/logout", {
+            method: "POST"
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            window.location.href = "/";
+        } else {
+            alert("Unable to log out.");
+        }
+
+    } catch (error) {
+        alert("Something went wrong. Please try again.");
+    }
+}
+ // JOIN TEAM
+async function joinTeam() {
+    const inviteCode = prompt("Enter Invitation Code:");
+
+    if (inviteCode === null) {
+        return;
+    }
+
+    if (!inviteCode.trim()) {
+        alert("Please enter an invitation code.");
+        return;
+    }
+
+    try {
+    const response = await fetch("/join-team", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            invite_code: inviteCode.trim()
+        })
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+        alert("Successfully joined team: " + result.team_name);
+        location.reload();
+    } else {
+        alert(result.message);
+    }
+
+} catch (error) {
+    alert("Something went wrong. Please try again.");
+}
+}
+// CREATE TEAM
+async function createTeam() {
+    const teamName = prompt("Enter your team name:");
+
+    if (teamName === null) {
+        return;
+    }
+
+    if (!teamName.trim()) {
+        alert("Please enter a team name.");
+        return;
+    }
+
+    try {
+        const response = await fetch("/create-team", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: teamName.trim()
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            alert("Team created successfully!\nInvitation Code: " + result.invite_code);
+            location.reload();
+        } else {
+            alert(result.message);
+        }
+
+    } catch (error) {
+        alert("Something went wrong. Please try again.");
+    }
+}  
+// SHOW AND HIDE MY TEAMS
+function toggleMyTeams() {
+    const section = document.getElementById("myTeamsSection");
+
+    if (section.style.display === "none") {
+        section.style.display = "block";
+
+        section.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    } else {
+        section.style.display = "none";
+    }
+}
+
+</script>
+</body>
+</html>
+ 
